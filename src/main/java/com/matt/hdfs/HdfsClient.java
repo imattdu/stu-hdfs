@@ -18,8 +18,8 @@ import java.util.Arrays;
 public class HdfsClient {
 
     FileSystem fs = null;
-
-    // 1.获取客户端资源
+    //
+    // 1.获取客户端对象
     // 2.执行相应的命令
     // 3.关闭资源
 
@@ -50,7 +50,7 @@ public class HdfsClient {
     @Test
     public void testPut() throws IOException {
         // 删除本地 覆盖文件
-        fs.copyFromLocalFile(false,true,new Path("D:/var/swk.txt"), new Path("/xiyou"));
+        fs.copyFromLocalFile(false,true,new Path("D:/var/swk.txt"), new Path("/test"));
     }
 
 
@@ -63,8 +63,9 @@ public class HdfsClient {
     */
     @Test
     public void testGet() throws IOException {
-        // 4开启本地文件校验
-        fs.copyToLocalFile(false,new Path("/xiyou/swk.txt"), new Path("D:/"), true);
+        // 4开启本地文件校验 false:
+        // 校验
+        fs.copyToLocalFile(false,new Path("/xiyou/swk.txt"), new Path("D:/"), false);
     }
 
 
@@ -78,18 +79,19 @@ public class HdfsClient {
     @Test
     public void testMv() throws IOException {
        // fs.rename(new Path("/test1"), new Path("/test1"));
-       fs.rename(new Path("/test1"), new Path("/xiyou/"));
+       fs.rename(new Path("/xiyou"), new Path("/xupt"));
     }
 
 
     @Test
     public void testFileDetail() throws IOException {
         // test
-        RemoteIterator<LocatedFileStatus> remoteIterator = fs.listFiles(new Path("/xiyou"), false);
+        RemoteIterator<LocatedFileStatus> remoteIterator = fs.listFiles(new Path("/xupt"), true);
         while (remoteIterator.hasNext()) {
             LocatedFileStatus locatedFileStatus = remoteIterator.next();
             System.out.println(Arrays.toString(locatedFileStatus.getBlockLocations()));
             System.out.println(locatedFileStatus.getOwner());
+            System.out.println(locatedFileStatus.getAccessTime());
         }
     }
 
@@ -98,9 +100,10 @@ public class HdfsClient {
     public void testIsFileOrDir() throws IOException {
         FileStatus[] fileStatuses = fs.listStatus(new Path("/"));
         for (FileStatus fileStatus : fileStatuses) {
+            System.out.println(fileStatus.getPath().getName());
             System.out.println(fileStatus.isFile());
             System.out.println(fileStatus.isDirectory());
-            System.out.println(fileStatus.getPath().getName());
+
             System.out.println("-----------------------");
         }
     }
