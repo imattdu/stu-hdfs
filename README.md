@@ -1,1 +1,1 @@
-# studyhdfs
+# stu-hdfs
