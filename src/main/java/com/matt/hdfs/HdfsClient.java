@@ -18,7 +18,6 @@ import java.util.Arrays;
 public class HdfsClient {
 
     FileSystem fs = null;
-    //
     // 1.获取客户端对象
     // 2.执行相应的命令
     // 3.关闭资源
@@ -27,7 +26,6 @@ public class HdfsClient {
     @Before
     public void init() throws URISyntaxException, IOException, InterruptedException {
         Configuration configuration = new Configuration();
-
         fs = FileSystem.get(new URI("hdfs://matt05:8020"), configuration, "matt");
     }
 
